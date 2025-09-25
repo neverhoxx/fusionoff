@@ -1,4 +1,4 @@
-import {prisma} from "../../../../prisma/prisma-client";
+import { prisma } from "../../../../prisma/prisma-client";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { generateToken } from "@/lib/auth";
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 
-    const token = generateToken({ userId: user.id });
+    const token = generateToken({ userId: user.id.toString() });
 
     const res = NextResponse.json({ success: true });
     res.cookies.set("token", token, {

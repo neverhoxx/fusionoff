@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Container } from "@/components/shared/container";
 
@@ -8,18 +8,19 @@ import { useCart } from "@/lib/useCart";
 type Product = {
     id: number;
     title: string;
-    subtitle?: string;
-    description?: string;
-    material?: string;
-    polup?: string;
-    polub?: string;
-    shirinab?: string;
-    koleno?: string;
-    dlina?: string;
-    vihod?: string;
+    subtitle?: string | null;
+    description?: string | null;
+    material?: string | null;
+    polup?: string | null;
+    polub?: string | null;
+    shirinab?: string | null;
+    koleno?: string | null;
+    dlina?: string | null;
+    vihod?: string | null;
     price: number;
     images: { id: number; url: string }[];
 };
+
 
 type User = {
     id: number;
@@ -30,7 +31,6 @@ type User = {
 
 export default function ProductClient({
     product,
-    user
 }: {
     product: Product;
     user: User;
@@ -38,7 +38,7 @@ export default function ProductClient({
     const [activeImage, setActiveImage] = useState(
         product.images.length > 0 ? product.images[0].url : null
     );
-    const [quantity, setQuantity] = useState<number>(1);
+    const [quantity] = useState<number>(1);
     const { addItem } = useCart();
 
     const handleAddToCart = () => {

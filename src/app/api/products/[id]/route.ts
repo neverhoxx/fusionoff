@@ -1,12 +1,13 @@
 import { prisma } from "../../../../../prisma/prisma-client";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
+import { Prisma } from "@prisma/client";
 
 export async function PATCH(
-    req: Request,
-    context: { params: { id: string } }
+    req: NextRequest,
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const { id } = context.params;
+        const { id } = await context.params;
         const productId = parseInt(id, 10);
 
         if (isNaN(productId)) {
@@ -33,14 +34,14 @@ export async function PATCH(
         });
 
         return NextResponse.json(updated);
-    } catch (err) {
+    } catch (err: unknown) {
         console.error("Ошибка обновления:", err);
         return NextResponse.json({ error: "Ошибка сервера" }, { status: 500 });
     }
 }
 
 export async function DELETE(
-    req: Request,
+    req: NextRequest,
     context: { params: Promise<{ id: string }> }
 ) {
     try {
@@ -63,12 +64,13 @@ export async function DELETE(
     } catch (err: unknown) {
         console.error("Ошибка удаления:", err);
 
-        if (err instanceof Error && (err as any).code === "P2025") {
+        if (
+            err instanceof Prisma.PrismaClientKnownRequestError &&
+            err.code === "P2025"
+        ) {
             return NextResponse.json({ error: "Продукт не найден" }, { status: 404 });
         }
 
         return NextResponse.json({ error: "Ошибка сервера" }, { status: 500 });
     }
 }
-
-

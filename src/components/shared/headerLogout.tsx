@@ -5,7 +5,7 @@ import { Header } from "./header";
 
 interface Props {
     user: {
-        id: string;
+        id: string | number;
         email: string;
         username: string;
     } | null;
@@ -19,5 +19,9 @@ export default function HeaderWithLogout({ user }: Props) {
         router.refresh();
     };
 
-    return <Header user={user} logout={logout} />;
+    const formattedUser = user
+        ? { ...user, id: user.id.toString() }
+        : null;
+
+    return <Header user={formattedUser} logout={logout} />;
 }

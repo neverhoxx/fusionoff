@@ -10,15 +10,15 @@ import Cart from "@/app/Cart";
 
 import { useCart } from "@/lib/useCart";
 
-interface Props {
+type Props = {
     user: {
         id: string;
         email: string;
         username: string;
-        isAdmin: boolean;
+        isAdmin?: boolean;
     } | null;
     logout: () => void;
-}
+};
 
 interface CartItem {
     id: number;
