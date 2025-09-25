@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Container } from "./container";
 import Image from "next/image";
 import Link from "next/link";
-import searchIcon from "@/images/icons/header-search.svg";
 import cartIcon from "@/images/icons/header-cart.svg";
 import userPic from "@/images/icons/header-user.svg";
 import { MdOutlineClose } from "react-icons/md";
@@ -28,6 +27,11 @@ interface CartItem {
     quantity: number;
 }
 
+interface SearchResult {
+    id: number;
+    title: string;
+}
+
 export const Header: React.FC<Props> = ({ user, logout }) => {
     const [open, setOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
@@ -35,7 +39,7 @@ export const Header: React.FC<Props> = ({ user, logout }) => {
     const [cartOpen, setCartOpen] = useState(false);
 
     const [query, setQuery] = useState("");
-    const [results, setResults] = useState<any[]>([]);
+    const [results, setResults] = useState<SearchResult[]>([]);
     const [loading, setLoading] = useState(false);
 
     const { cart } = useCart();

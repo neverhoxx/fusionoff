@@ -38,10 +38,7 @@ export default function ProductClient({
     const [activeImage, setActiveImage] = useState(
         product.images.length > 0 ? product.images[0].url : null
     );
-    const [message, setMessage] = useState("");
-
-    const [cart, setCartItems] = useState<any[]>([]);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState<number>(1);
     const { addItem } = useCart();
 
     const handleAddToCart = () => {

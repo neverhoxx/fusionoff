@@ -23,8 +23,8 @@ export default function ProductForm() {
     const compressFile = async (file: File) => {
         try {
             const options = {
-                maxSizeMB: 1, // максимум 1MB на файл
-                maxWidthOrHeight: 1920, // ресайз до 1920px
+                maxSizeMB: 1,
+                maxWidthOrHeight: 1920,
                 useWebWorker: true,
             };
             return await imageCompression(file, options);
@@ -39,13 +39,12 @@ export default function ProductForm() {
         setLoading(true);
         setMessage("");
 
-        let uploadedUrls: string[] = [];
+        const uploadedUrls: string[] = [];
 
         if (files) {
             for (let i = 0; i < files.length; i++) {
                 let file = files[i];
 
-                // Сжимаем файл перед загрузкой
                 file = await compressFile(file);
 
                 const formData = new FormData();
@@ -63,12 +62,17 @@ export default function ProductForm() {
                     } else {
                         throw new Error(data.error || "Ошибка загрузки");
                     }
-                } catch (err: any) {
+                } catch (err: unknown) {
                     console.error("Ошибка загрузки:", err);
-                    setMessage(`❌ Ошибка загрузки файла: ${err.message}`);
+                    if (err instanceof Error) {
+                        setMessage(`❌ Ошибка загрузки файла: ${err.message}`);
+                    } else {
+                        setMessage("❌ Ошибка загрузки файла: неизвестная ошибка");
+                    }
                     setLoading(false);
                     return;
                 }
+
             }
         }
 

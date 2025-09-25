@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
     req: Request,
-    context: { params: Promise<{ id: string }> }
+    context: { params: { id: string } }
 ) {
     try {
-        const { id } = await context.params;
+        const { id } = context.params;
         const productId = parseInt(id, 10);
 
         if (isNaN(productId)) {
@@ -24,8 +24,8 @@ export async function PATCH(
                 description,
                 images: images
                     ? {
-                        deleteMany: {}, // удаляем все старые
-                        create: images.map((url: string) => ({ url })), // создаем новые
+                        deleteMany: {},
+                        create: images.map((url: string) => ({ url })),
                     }
                     : undefined,
             },
@@ -60,10 +60,10 @@ export async function DELETE(
         });
 
         return NextResponse.json({ message: "Продукт удален" });
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("Ошибка удаления:", err);
 
-        if (err.code === "P2025") {
+        if (err instanceof Error && (err as any).code === "P2025") {
             return NextResponse.json({ error: "Продукт не найден" }, { status: 404 });
         }
 

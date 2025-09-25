@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import AuthLayout from "@/app/@auth/layout";
 
+import Link from "next/link";
+
 export default function RegisterForm() {
     const [form, setForm] = useState({
         email: "",
@@ -82,13 +84,13 @@ export default function RegisterForm() {
 
                 <p className="text-white">
                     Haven’t account?{" "}
-                    <a
+                    <Link
                         href="/login"
                         className="underline font-bold cursor-pointer"
                         onClick={handleClick}
                     >
                         Sign in
-                    </a>
+                    </Link>
                 </p>
             </form>
         </AuthLayout>
