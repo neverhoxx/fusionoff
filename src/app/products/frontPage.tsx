@@ -5,6 +5,8 @@ import { Container } from "@/components/shared/container";
 
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
+import Link from "next/link";
+
 type Product = {
     id: number;
     title: string;
@@ -37,7 +39,7 @@ function ProductCard({ item }: { item: Product }) {
     };
 
     return (
-        <div className="md:w-[352px] flex flex-col mt-[25px] select-none w-[155px] cursor-pointer">
+        <Link href={`/products/${item.id}`} className="md:w-[352px] flex flex-col mt-[25px] select-none w-[155px] cursor-pointer">
             <div className="relative group">
                 {item.images.length > 0 ? (
                     <Image
@@ -71,6 +73,6 @@ function ProductCard({ item }: { item: Product }) {
             </div>
             <h3 className="md:text-[14px] text-[10px] font-medium text-start">{item.title}</h3>
             <span className="md:text-[14px] text-[10px] font-medium">${item.price}</span>
-        </div>
+        </Link>
     );
 }

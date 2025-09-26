@@ -91,10 +91,10 @@
 
 @media(max-width: 768px){
   .main-coll{
-    background-image: url("@/images/collection-bg-md.png") !important;
+    background-image: url("../images/collection-bg-md.png") !important;
   }
   .hero-h{
-    background-image: url("@/images/main-hero-bg-md.png") !important;
+    background-image: url("../images/main-hero-bg-md.png") !important;
   }
   
 }

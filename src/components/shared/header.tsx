@@ -10,6 +10,8 @@ import Cart from "@/app/Cart";
 
 import { useCart } from "@/lib/useCart";
 
+import { IBM_Plex_Mono } from "next/font/google";
+
 type Props = {
     user: {
         id: string;
@@ -31,6 +33,11 @@ interface SearchResult {
     id: number;
     title: string;
 }
+
+const ibmPlexMono = IBM_Plex_Mono({
+    subsets: ["latin"],
+    weight: ["700"]
+});
 
 export const Header: React.FC<Props> = ({ user, logout }) => {
     const [open, setOpen] = useState(false);
@@ -102,8 +109,8 @@ export const Header: React.FC<Props> = ({ user, logout }) => {
                             ></span>
                         </button>
 
-                        <Link href="/" className="text-xl font-bold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 cursor-pointer">
-                            LOGO
+                        <Link href="/" className={`text-xl ${ibmPlexMono.className} font-extrabold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 cursor-pointer`}>
+                            FUSION
                         </Link>
 
                         <div className="flex items-center gap-4 relative">
@@ -113,7 +120,6 @@ export const Header: React.FC<Props> = ({ user, logout }) => {
                             }}>
                                 <Image src={cartIcon} alt="cart" width={24} height={24} />
 
-                                {/* бейдж с количеством */}
                                 {totalQuantity > 0 && (
                                     <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
                                         {totalQuantity}
@@ -169,7 +175,6 @@ export const Header: React.FC<Props> = ({ user, logout }) => {
                 <nav className="flex flex-col gap-4">
                     <Link href="/" onClick={() => setOpen(false)}>Главная</Link>
                     <Link href="/products" onClick={() => setOpen(false)}>Каталог</Link>
-                    <Link href="/contacts" onClick={() => setOpen(false)}>Контакты</Link>
                 </nav>
             </div>
 

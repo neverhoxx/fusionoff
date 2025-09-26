@@ -65,7 +65,7 @@ export default function Cart({ onClose }: Props) {
                     <span className="font-medium">Итого:</span>
                     <span className="font-semibold">€{total}</span>
                 </div>
-                <Link href="pay" className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition">
+                <Link href="https://t.me/k3nn1e" className="w-full bg-black text-white py-3 px-10 rounded-lg hover:bg-gray-800 transition">
                     Перейти к оплате
                 </Link>
             </div>
