@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Hero from "@/components/shared/main/hero";
 import MainProductsWrapper from "@/components/shared/main/MainProductsWrapper";
 import MainCollection from "@/components/shared/main/collection";
