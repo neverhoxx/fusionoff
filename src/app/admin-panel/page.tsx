@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import ProductForm from "./ProductForm";
 import AdminProductsWrapper from "./AdminProductsWrapper";

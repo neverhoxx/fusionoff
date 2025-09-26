@@ -21,20 +21,19 @@ export async function POST(req: Request) {
             );
         }
 
-        const usernameRegex = /^[a-z0-9]+$/;
-
+        const usernameRegex = /^[a-z0-9]{3,20}$/;
         if (!usernameRegex.test(username)) {
             return NextResponse.json(
                 {
                     error:
-                        "Username must be in lowercase Latin letters and digits only. No spaces, uppercase letters, or special characters.",
+                        "Username must be 3–20 characters, lowercase letters and digits only.",
                 },
                 { status: 400 }
             );
         }
 
-        const user_name_existing = await prisma.user.findUnique({ where: { username } });
-        if (user_name_existing) {
+        const usernameTaken = await prisma.user.findUnique({ where: { username } });
+        if (usernameTaken) {
             return NextResponse.json(
                 { error: "Username already exists" },
                 { status: 400 }
@@ -54,12 +53,14 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json({ user: { id: user.id, email: user.email } });
+        return NextResponse.json({
+            user: { id: user.id, email: user.email, username: user.username },
+        });
     } catch (error) {
         console.error("Registration error:", error);
         return NextResponse.json(
-            { error: "Invalid request data" },
-            { status: 400 }
+            { error: "Something went wrong. Please try again." },
+            { status: 500 }
         );
     }
 }
