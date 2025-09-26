@@ -3,8 +3,6 @@
 import { useRouter } from "next/navigation";
 import { Header } from "./header";
 
-export const dynamic = 'force-dynamic';
-
 interface Props {
     user: {
         id: string | number;
