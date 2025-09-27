@@ -221,7 +221,7 @@ export default function ProductForm() {
                 <label className="block mb-1">Высота посадки</label>
                 <input
                     value={vipo}
-                    onChange={(e) => setVihod(e.target.value)}
+                    onChange={(e) => setVipo(e.target.value)}
                     className="border px-2 py-1 w-full"
                 />
             </div>
