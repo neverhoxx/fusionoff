@@ -280,7 +280,7 @@ function EditForm({
             />
             <input
                 value={vipo}
-                onChange={(e) => setPolup(e.target.value)}
+                onChange={(e) => setVipo(e.target.value)}
                 placeholder="Высота посадки"
                 className="border px-2 py-1 w-full"
             />
