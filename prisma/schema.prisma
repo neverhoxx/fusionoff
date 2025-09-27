@@ -65,6 +65,7 @@ model Product {
   koleno      String?
   dlina       String?
   vihod       String?
+  vipo        String?
   price       Float
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

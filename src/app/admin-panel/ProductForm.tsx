@@ -15,6 +15,7 @@ export default function ProductForm() {
     const [koleno, setKoleno] = useState("");
     const [dlina, setDlina] = useState("");
     const [vihod, setVihod] = useState("");
+    const [vipo, setVipo] = useState("");
     const [material, setMaterial] = useState("");
     const [files, setFiles] = useState<FileList | null>(null);
     const [loading, setLoading] = useState(false);
@@ -91,6 +92,7 @@ export default function ProductForm() {
                 koleno,
                 dlina,
                 vihod,
+                vipo,
                 images: uploadedUrls,
             }),
         });
@@ -108,6 +110,7 @@ export default function ProductForm() {
             setKoleno("");
             setDlina("");
             setVihod("");
+            setVipo("");
             setMaterial("");
         } else {
             const error = await res.json();
@@ -212,6 +215,12 @@ export default function ProductForm() {
                 <label className="block mb-1">Выход</label>
                 <input
                     value={vihod}
+                    onChange={(e) => setVihod(e.target.value)}
+                    className="border px-2 py-1 w-full"
+                />
+                <label className="block mb-1">Высота посадки</label>
+                <input
+                    value={vipo}
                     onChange={(e) => setVihod(e.target.value)}
                     className="border px-2 py-1 w-full"
                 />

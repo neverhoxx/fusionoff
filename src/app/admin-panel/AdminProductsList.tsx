@@ -16,6 +16,7 @@ type Product = {
     koleno?: string | null;
     dlina?: string | null;
     vihod?: string | null;
+    vipo?: string | null;
     images: { id: number; url: string }[];
 };
 
@@ -167,6 +168,7 @@ function EditForm({
     const [koleno, setKoleno] = useState(product.koleno || "");
     const [dlina, setDlina] = useState(product.dlina || "");
     const [vihod, setVihod] = useState(product.vihod || "");
+    const [vipo, setVipo] = useState(product.vipo || "");
     const [files, setFiles] = useState<FileList | null>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -185,6 +187,7 @@ function EditForm({
                 koleno,
                 dlina,
                 vihod,
+                vipo
             },
             files
         );
@@ -273,6 +276,12 @@ function EditForm({
                 value={vihod}
                 onChange={(e) => setVihod(e.target.value)}
                 placeholder="Выход"
+                className="border px-2 py-1 w-full"
+            />
+            <input
+                value={vipo}
+                onChange={(e) => setPolup(e.target.value)}
+                placeholder="Высота посадки"
                 className="border px-2 py-1 w-full"
             />
 

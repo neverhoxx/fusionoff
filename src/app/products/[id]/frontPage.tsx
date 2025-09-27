@@ -17,6 +17,7 @@ type Product = {
     koleno?: string | null;
     dlina?: string | null;
     vihod?: string | null;
+    vipo?: string | null;
     price: number;
     images: { id: number; url: string }[];
 };
@@ -53,9 +54,9 @@ export default function ProductClient({
 
     return (
         <div className="product-det">
-            <Container className="flex product-det pt-5">
-                <div className="w-[65%] flex gap-4">
-                    <div className="flex-1">
+            <Container className="flex product-det pt-5 flex-wrap">
+                <div className="w-[65%] min-w-[300px] flex gap-4 flex-wrap">
+                    <div className="flex-1 min-w-[300px]">
                         {activeImage ? (
                             <Image
                                 src={activeImage}
@@ -87,7 +88,7 @@ export default function ProductClient({
                     </div>
                 </div>
 
-                <div className="w-[35%] pl-[24px]">
+                <div className="lg:w-[35%] w-[100%] pl-[24px]">
                     <h2 className="text-[24px] font-semibold mb-2">{product.title}</h2>
                     <p className="text-[18px] mb-3">{product.price}$</p>
 
@@ -115,6 +116,7 @@ export default function ProductClient({
                             <li>Колено: {product.koleno}</li>
                             <li>Длина: {product.dlina}</li>
                             <li>Выход: {product.vihod}</li>
+                            <li>Высота посадки: {product.vipo}</li>
                         </ul>
                     </div>
                 </div>
