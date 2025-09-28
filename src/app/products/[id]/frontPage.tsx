@@ -134,12 +134,7 @@ export default function ProductClient({
                 </div>
             </Container>
 
-            <Container className="mt-10">
-                <h2 className="text-[22px] font-semibold mb-4">Вам может понравиться</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <RelatedProducts products={relatedProducts} />
-                </div>
-            </Container>
+            <RelatedProducts products={relatedProducts} />
         </div>
     );
 }

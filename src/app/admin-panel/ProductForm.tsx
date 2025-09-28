@@ -46,9 +46,13 @@ export default function ProductForm() {
                     } else {
                         throw new Error(data.error || "Ошибка загрузки");
                     }
-                } catch (err: any) {
+                } catch (err: unknown) {
                     console.error("Ошибка загрузки:", err);
-                    setMessage(`❌ Ошибка загрузки файла: ${err.message}`);
+                    if (err instanceof Error) {
+                        setMessage(`❌ Ошибка загрузки файла: ${err.message}`);
+                    } else {
+                        setMessage("❌ Ошибка загрузки файла: неизвестная ошибка");
+                    }
                     setLoading(false);
                     return;
                 }
