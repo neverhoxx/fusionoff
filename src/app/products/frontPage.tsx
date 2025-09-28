@@ -11,6 +11,7 @@ type Product = {
 };
 
 export default function Products({ products }: { products: Product[] }) {
+    console.log(products.length)
     return (
         <Container className="pt-20">
             <h2 className="text-[30px] font-bold">НОВАЯ КОЛЛЕКЦИЯ</h2>
