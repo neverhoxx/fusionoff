@@ -72,7 +72,7 @@ function ProductCard({ item }: { item: Product }) {
                 )}
             </div>
             <h3 className="md:text-[14px] text-[10px] font-medium text-start">{item.title}</h3>
-            <span className="md:text-[14px] text-[10px] font-medium">${item.price}</span>
+            <span className="md:text-[14px] text-[10px] font-medium">{item.price}₽</span>
         </Link>
     );
 }

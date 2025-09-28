@@ -46,7 +46,7 @@ export default function Cart({ onClose }: Props) {
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <p className="font-semibold">€{item.price * item.quantity}</p>
+                                    <p className="font-semibold">{item.price * item.quantity}₽</p>
                                     <button
                                         onClick={() => removeItem(item.id)}
                                         className="text-red-600 text-sm hover:underline"
