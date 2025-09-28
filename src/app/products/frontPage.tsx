@@ -1,11 +1,5 @@
 "use client";
-import Image from "next/image";
-import { useState } from "react";
 import { Container } from "@/components/shared/container";
-
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-
-import Link from "next/link";
 
 import { ProductCard } from "./product-card";
 

@@ -31,7 +31,7 @@ export default function ProductForm() {
 
         if (files) {
             for (let i = 0; i < files.length; i++) {
-                let file = files[i];
+                const file = files[i];
 
                 const formData = new FormData();
                 formData.append("file", file);
