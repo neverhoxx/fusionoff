@@ -20,7 +20,7 @@ export default function Cart({ onClose }: Props) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="fixed top-0 right-0 h-full w-1/2 bg-white shadow-xl z-50 flex flex-col"
+            className="fixed top-0 right-0 h-full w-[80%] bg-white shadow-xl z-50 flex flex-col"
         >
             <div className="flex items-center justify-between border-b p-4">
                 <h2 className="text-xl font-semibold">Корзина</h2>
@@ -42,7 +42,7 @@ export default function Cart({ onClose }: Props) {
                                 <div>
                                     <p className="font-medium">{item.title}</p>
                                     <p className="text-sm text-gray-500">
-                                        {item.quantity} × €{item.price}
+                                        {item.quantity} × {item.price}₽
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -63,7 +63,7 @@ export default function Cart({ onClose }: Props) {
             <div className="border-t p-4">
                 <div className="flex justify-between mb-4">
                     <span className="font-medium">Итого:</span>
-                    <span className="font-semibold">€{total}</span>
+                    <span className="font-semibold">{total}₽</span>
                 </div>
                 <Link href="https://t.me/k3nn1e" className="w-full bg-black text-white py-3 px-10 rounded-lg hover:bg-gray-800 transition">
                     Перейти к оплате

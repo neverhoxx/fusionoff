@@ -2,8 +2,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Container } from "@/components/shared/container";
-
 import { useCart } from "@/lib/useCart";
+
+import RelatedProducts from "./related";
 
 type Product = {
     id: number;
@@ -22,7 +23,6 @@ type Product = {
     images: { id: number; url: string }[];
 };
 
-
 type User = {
     id: number;
     username: string;
@@ -30,10 +30,20 @@ type User = {
     isAdmin: boolean;
 } | null;
 
+type RelatedProduct = {
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+};
+
 export default function ProductClient({
     product,
+    relatedProducts,
+    user,
 }: {
     product: Product;
+    relatedProducts: Product[];
     user: User;
 }) {
     const [activeImage, setActiveImage] = useState(
@@ -47,23 +57,22 @@ export default function ProductClient({
             id: product.id,
             title: product.title,
             price: product.price,
-            quantity
+            quantity,
         });
     };
 
-
     return (
         <div className="product-det">
-            <Container className="flex product-det pt-5 flex-wrap">
-                <div className="w-[65%] min-w-[300px] flex gap-4 flex-wrap">
-                    <div className="flex-1 min-w-[300px]">
+            <Container className="flex flex-col md:flex-col lg:flex-row gap-6 pt-5">
+                <div className="lg:w-[65%] w-full flex gap-4 flex-wrap">
+                    <div className="flex-1 min-w-[280px]">
                         {activeImage ? (
                             <Image
                                 src={activeImage}
                                 alt={product.title}
                                 width={830}
                                 height={607}
-                                className="max-h-[640px] object-contain rounded select-none"
+                                className="max-h-[640px] object-contain rounded select-none w-full"
                             />
                         ) : (
                             <div className="w-full h-[600px] bg-gray-200 rounded flex items-center justify-center select-none">
@@ -72,7 +81,7 @@ export default function ProductClient({
                         )}
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible">
                         {product.images.map((img: { id: number; url: string }) => (
                             <Image
                                 key={img.id}
@@ -88,15 +97,18 @@ export default function ProductClient({
                     </div>
                 </div>
 
-                <div className="lg:w-[35%] w-[100%] pl-[24px]">
+                <div className="lg:w-[35%] w-full pl-0 lg:pl-[24px]">
                     <h2 className="text-[24px] font-semibold mb-2">{product.title}</h2>
-                    <p className="text-[18px] mb-3">{product.price}$</p>
+                    <p className="text-[18px] mb-3">{product.price}₽</p>
 
-                    <button onClick={handleAddToCart} className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">
+                    <button
+                        onClick={handleAddToCart}
+                        className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition"
+                    >
                         Добавить в корзину
                     </button>
 
-                    <div>
+                    <div className="mt-5">
                         <div className="py-2 border-y-2 mb-1">
                             <h3 className="text-[18px]">Описание</h3>
                         </div>
@@ -119,6 +131,13 @@ export default function ProductClient({
                             <li>Высота посадки: {product.vipo}</li>
                         </ul>
                     </div>
+                </div>
+            </Container>
+
+            <Container className="mt-10">
+                <h2 className="text-[22px] font-semibold mb-4">Вам может понравиться</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <RelatedProducts products={relatedProducts} />
                 </div>
             </Container>
         </div>

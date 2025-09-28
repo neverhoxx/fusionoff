@@ -21,19 +21,6 @@ export default function ProductForm() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
-    const compressFile = async (file: File) => {
-        try {
-            const options = {
-                maxSizeMB: 1,
-                maxWidthOrHeight: 1920,
-                useWebWorker: true,
-            };
-            return await imageCompression(file, options);
-        } catch (error) {
-            console.error("Ошибка сжатия:", error);
-            return file;
-        }
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,8 +32,6 @@ export default function ProductForm() {
         if (files) {
             for (let i = 0; i < files.length; i++) {
                 let file = files[i];
-
-                file = await compressFile(file);
 
                 const formData = new FormData();
                 formData.append("file", file);
