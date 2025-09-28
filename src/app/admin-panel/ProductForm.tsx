@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import imageCompression from "browser-image-compression";
 
 export default function ProductForm() {
     const [title, setTitle] = useState("");
@@ -32,7 +31,6 @@ export default function ProductForm() {
         if (files) {
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-
                 const formData = new FormData();
                 formData.append("file", file);
 
@@ -48,17 +46,12 @@ export default function ProductForm() {
                     } else {
                         throw new Error(data.error || "Ошибка загрузки");
                     }
-                } catch (err: unknown) {
+                } catch (err: any) {
                     console.error("Ошибка загрузки:", err);
-                    if (err instanceof Error) {
-                        setMessage(`❌ Ошибка загрузки файла: ${err.message}`);
-                    } else {
-                        setMessage("❌ Ошибка загрузки файла: неизвестная ошибка");
-                    }
+                    setMessage(`❌ Ошибка загрузки файла: ${err.message}`);
                     setLoading(false);
                     return;
                 }
-
             }
         }
 

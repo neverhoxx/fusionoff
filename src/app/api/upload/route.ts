@@ -19,16 +19,23 @@ export async function POST(req: Request) {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        const res = await new Promise((resolve, reject) => {
+        const result = await new Promise((resolve, reject) => {
             cloudinary.uploader
-                .upload_stream({ folder: "products" }, (err, result) => {
-                    if (err) reject(err);
-                    else resolve(result);
-                })
+                .upload_stream(
+                    {
+                        folder: "products",
+                        format: "webp",
+                        quality: "auto",
+                    },
+                    (err, uploadResult) => {
+                        if (err) reject(err);
+                        else resolve(uploadResult);
+                    }
+                )
                 .end(buffer);
         });
 
-        return NextResponse.json(res);
+        return NextResponse.json(result);
     } catch (err) {
         console.error("Ошибка загрузки:", err);
         return NextResponse.json({ error: "Ошибка сервера" }, { status: 500 });
