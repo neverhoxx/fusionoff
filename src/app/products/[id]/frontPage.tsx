@@ -120,16 +120,6 @@ export default function ProductClient({
                         <h3 className="font-semibold">Материал</h3>
                         <p>{product.material}</p>
 
-                        <h3 className="font-semibold mt-3">Размеры</h3>
-                        <ul className="mb-2 list-disc pl-4">
-                            <li>Полуобхват: {product.polup}</li>
-                            <li>Полуобхват бёдер: {product.polub}</li>
-                            <li>Ширина: {product.shirinab}</li>
-                            <li>Колено: {product.koleno}</li>
-                            <li>Длина: {product.dlina}</li>
-                            <li>Выход: {product.vihod}</li>
-                            <li>Высота посадки: {product.vipo}</li>
-                        </ul>
                     </div>
                 </div>
             </Container>
