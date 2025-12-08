@@ -208,7 +208,7 @@ export const Header: React.FC<Props> = ({ user, logout }) => {
                         <div className="mt-4 max-h-60 overflow-y-auto">
                             {loading && <p className="text-gray-500">Загрузка...</p>}
                             {!loading && results.length === 0 && query.length > 1 && (
-                                <p className="text-gray-500">Ничего не найдено</p>
+                                <p className="text-gray-500">Ничего не найдено.</p>
                             )}
                             <ul className="divide-y">
                                 {results.map((p) => (
