@@ -1,7 +1,6 @@
 import { prisma } from "../../../../prisma/prisma-client";
 import CasesAdminProductsList from "./AdminProductsList";
 
-// Тип продукта для компонента
 type CaseProduct = {
     id: number;
     title: string;
