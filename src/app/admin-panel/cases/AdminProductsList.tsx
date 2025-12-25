@@ -38,7 +38,7 @@ export default function CasesAdminProductsList({ products }: { products: Product
                     const err = await res.json();
                     errMessage = err.error || errMessage;
                 } catch {
-                    // parsing failed
+                    // parsing failedd
                 }
             }
 
