@@ -3,8 +3,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { Container } from "@/components/shared/container";
 import { useCart } from "@/lib/useCart";
-
 import RelatedProducts from "./related";
+
+type ProductType = 'JEANS' | 'HOODIE' | 'CASE';
 
 type Product = {
     id: number;
@@ -12,13 +13,6 @@ type Product = {
     subtitle?: string | null;
     description?: string | null;
     material?: string | null;
-    polup?: string | null;
-    polub?: string | null;
-    shirinab?: string | null;
-    koleno?: string | null;
-    dlina?: string | null;
-    vihod?: string | null;
-    vipo?: string | null;
     price: number;
     images: { id: number; url: string }[];
 };
@@ -30,14 +24,7 @@ type User = {
     isAdmin: boolean;
 } | null;
 
-type RelatedProduct = {
-    id: number;
-    title: string;
-    price: number;
-    image: string;
-};
-
-export default function ProductClient({
+export default function HoodiesProductClient({
     product,
     relatedProducts,
     user,
@@ -55,6 +42,7 @@ export default function ProductClient({
     const handleAddToCart = () => {
         addItem({
             id: product.id,
+            productType: 'HOODIE',
             title: product.title,
             price: product.price,
             quantity,
@@ -63,7 +51,7 @@ export default function ProductClient({
 
     return (
         <div className="product-det">
-            <Container className="flex flex-col md:flex-col lg:flex-row gap-6 pt-5">
+            <Container className="flex flex-col lg:flex-row gap-6 pt-5">
                 <div className="lg:w-[65%] w-full flex gap-4 flex-wrap">
                     <div className="flex-1 min-w-[280px]">
                         {activeImage ? (
@@ -82,14 +70,16 @@ export default function ProductClient({
                     </div>
 
                     <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible">
-                        {product.images.map((img: { id: number; url: string }) => (
+                        {product.images.map((img) => (
                             <Image
                                 key={img.id}
                                 src={img.url}
                                 alt={product.title}
                                 width={100}
                                 height={100}
-                                className={`cursor-pointer border rounded object-cover select-none ${activeImage === img.url ? "border-black" : "border-transparent"
+                                className={`cursor-pointer border rounded object-cover select-none ${activeImage === img.url
+                                    ? "border-black"
+                                    : "border-transparent"
                                     }`}
                                 onClick={() => setActiveImage(img.url)}
                             />
@@ -119,17 +109,6 @@ export default function ProductClient({
 
                         <h3 className="font-semibold">Материал</h3>
                         <p>{product.material}</p>
-
-                        <h3 className="font-semibold mt-3">Размеры</h3>
-                        <ul className="mb-2 list-disc pl-4">
-                            <li>Полуобхват: {product.polup}</li>
-                            <li>Полуобхват бёдер: {product.polub}</li>
-                            <li>Ширина: {product.shirinab}</li>
-                            <li>Колено: {product.koleno}</li>
-                            <li>Длина: {product.dlina}</li>
-                            <li>Выход: {product.vihod}</li>
-                            <li>Высота посадки: {product.vipo}</li>
-                        </ul>
                     </div>
                 </div>
             </Container>

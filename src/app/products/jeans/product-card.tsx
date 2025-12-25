@@ -23,7 +23,7 @@ export function ProductCard({ item }: { item: Product }) {
     };
 
     return (
-        <Link href={`/products/${item.id}`} className="md:w-[352px] flex flex-col mt-[25px] select-none w-[155px] cursor-pointer">
+        <Link href={`/product/jeans/${item.id}`} className="md:w-[352px] flex flex-col mt-[25px] select-none w-[155px] cursor-pointer">
             <div className="relative group">
                 {item.images.length > 0 ? (
                     <Image

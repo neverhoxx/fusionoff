@@ -6,11 +6,11 @@ import { Container } from "../container";
 import Link from "next/link";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
-type ProductType = "JEANS" | "HOODIE" | "CASE";
+type ProductType = "CASE";
 
 type Product = {
     id: number;
-    productType: "JEANS" | "HOODIE" | "CASE";
+    productType: "CASE";
     title: string;
     price: number;
     images: { id: number; url: string }[];
@@ -18,10 +18,10 @@ type Product = {
 };
 
 
-export default function MainProducts({ products }: { products: Product[] }) {
+export default function MainCases({ products }: { products: Product[] }) {
     return (
         <Container className="pt-20">
-            <h2 className="text-[30px] font-bold">НОВЫЕ ВЕЩИ</h2>
+            <h2 className="text-[30px] font-bold">НАШИ ЧЕХЛЫ</h2>
 
             <div className="my-[50px] flex gap-0 flex-wrap justify-between">
                 {products.map((item) => (

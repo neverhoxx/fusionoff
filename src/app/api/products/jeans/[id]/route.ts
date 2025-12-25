@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 
-import { prisma } from "../../../../../prisma/prisma-client";
+import { prisma } from "../../../../../../prisma/prisma-client";
 import { NextResponse, NextRequest } from "next/server";
 import { Prisma } from "@prisma/client";
 
@@ -19,7 +19,7 @@ export async function PATCH(
         const body = await req.json();
         const { title, price, description, images } = body;
 
-        const updated = await prisma.product.update({
+        const updated = await prisma.jeans.update({
             where: { id: productId },
             data: {
                 title,
@@ -54,11 +54,11 @@ export async function DELETE(
             return NextResponse.json({ error: "Некорректный ID" }, { status: 400 });
         }
 
-        await prisma.productImage.deleteMany({
-            where: { productId },
+        await prisma.jeansImage.deleteMany({
+            where: { jeansId: productId },
         });
 
-        await prisma.product.delete({
+        await prisma.jeans.delete({
             where: { id: productId },
         });
 

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Container } from "../container";
+import { Container } from "@/components/shared/container";
 import Link from "next/link";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
@@ -18,10 +18,10 @@ type Product = {
 };
 
 
-export default function MainProducts({ products }: { products: Product[] }) {
+export default function ProductsPage({ products }: { products: Product[] }) {
     return (
         <Container className="pt-20">
-            <h2 className="text-[30px] font-bold">НОВЫЕ ВЕЩИ</h2>
+            <h2 className="text-[30px] font-bold">ВСЕ НАШИ ПРОДУКТЫ</h2>
 
             <div className="my-[50px] flex gap-0 flex-wrap justify-between">
                 {products.map((item) => (

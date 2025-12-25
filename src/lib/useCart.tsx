@@ -1,8 +1,11 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
+type ProductType = 'JEANS' | 'HOODIE' | 'CASE';
+
 type CartItem = {
     id: number;
+    productType: ProductType;
     title: string;
     price: number;
     quantity: number;
@@ -11,7 +14,7 @@ type CartItem = {
 type CartContextType = {
     cart: CartItem[];
     addItem: (item: CartItem) => void;
-    removeItem: (id: number) => void;
+    removeItem: (id: number, productType: ProductType) => void;
     clearCart: () => void;
 };
 
@@ -33,18 +36,26 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     const addItem = (item: CartItem) => {
         setCart((prev) => {
-            const existing = prev.find((p) => p.id === item.id);
+            const existing = prev.find(
+                (p) => p.id === item.id && p.productType === item.productType
+            );
+
             if (existing) {
                 return prev.map((p) =>
-                    p.id === item.id ? { ...p, quantity: p.quantity + item.quantity } : p
+                    p.id === item.id && p.productType === item.productType
+                        ? { ...p, quantity: p.quantity + item.quantity }
+                        : p
                 );
             }
+
             return [...prev, item];
         });
     };
 
-    const removeItem = (id: number) => {
-        setCart((prev) => prev.filter((p) => p.id !== id));
+    const removeItem = (id: number, productType: ProductType) => {
+        setCart((prev) =>
+            prev.filter((p) => !(p.id === id && p.productType === productType))
+        );
     };
 
     const clearCart = () => setCart([]);

@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../prisma/prisma-client";
+import { prisma } from "../../../../../prisma/prisma-client";
 
 export async function POST(req: Request) {
     try {
@@ -12,28 +12,18 @@ export async function POST(req: Request) {
             price,
             description,
             material,
-            polup,
-            polub,
-            shirinab,
-            koleno,
-            dlina,
-            vihod,
-            images,
+            collectionId,
+            images
         } = body;
 
-        const product = await prisma.product.create({
+        const product = await prisma.jeans.create({
             data: {
                 title,
                 subtitle,
                 price: parseFloat(price),
                 description,
                 material,
-                polup,
-                polub,
-                shirinab,
-                koleno,
-                dlina,
-                vihod,
+                collectionId,
                 images: {
                     create: images.map((url: string) => ({ url })),
                 },

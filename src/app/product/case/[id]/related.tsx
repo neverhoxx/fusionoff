@@ -1,6 +1,6 @@
 "use client";
 import { Container } from "@/components/shared/container";
-import { ProductCard } from "../product-card";
+import { ProductCard } from "../../../products/jeans/product-card";
 
 type Product = {
     id: number;

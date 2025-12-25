@@ -25,7 +25,7 @@ export default function AdminProductsList({ products }: { products: Product[] })
     const [editing, setEditing] = useState<Product | null>(null);
 
     const handleDelete = async (id: number) => {
-        const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+        const res = await fetch(`/api/products/jeans/${id}`, { method: "DELETE" });
 
         if (res.ok) {
             setItems((prev) => prev.filter((p) => p.id !== id));
@@ -46,43 +46,44 @@ export default function AdminProductsList({ products }: { products: Product[] })
         }
     };
 
-    const handleSave = async (updated: Product, files?: FileList | null) => {
+    const handleSave = async (
+        updated: Product,
+        newFiles: File[],
+        keepImages: string[]
+    ) => {
         let uploadedUrls: string[] = [];
 
-        if (files) {
-            for (let i = 0; i < files.length; i++) {
-                const formData = new FormData();
-                formData.append("file", files[i]);
+        for (const file of newFiles) {
+            const formData = new FormData();
+            formData.append("file", file);
 
-                const uploadRes = await fetch("/api/upload", {
-                    method: "POST",
-                    body: formData,
-                });
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
 
-                const data = await uploadRes.json();
-                if (data.secure_url) uploadedUrls.push(data.secure_url);
-            }
-        } else {
-            uploadedUrls = updated.images.map((img) => img.url);
+            const data = await res.json();
+            if (data.secure_url) uploadedUrls.push(data.secure_url);
         }
 
-        const res = await fetch(`/api/products/${updated.id}`, {
+        const res = await fetch(`/api/products/jeans/${updated.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...updated, images: uploadedUrls }),
+            body: JSON.stringify({
+                ...updated,
+                images: [...keepImages, ...uploadedUrls],
+            }),
         });
 
         if (res.ok) {
-            const newProduct = await res.json();
+            const updatedProduct = await res.json();
             setItems((prev) =>
-                prev.map((p) => (p.id === newProduct.id ? newProduct : p))
+                prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
             );
             setEditing(null);
-        } else {
-            const err = await res.json();
-            alert(`Ошибка: ${err.error}`);
         }
     };
+
 
     if (items.length === 0) {
         return <p className="mt-4 text-gray-500">Пока нет товаров</p>;
@@ -154,7 +155,7 @@ function EditForm({
     onCancel,
 }: {
     product: Product;
-    onSave: (p: Product, files?: FileList | null) => void;
+    onSave: (product: Product, newFiles: File[], keepImages: string[]) => void;
     onCancel: () => void;
 }) {
     const [title, setTitle] = useState(product.title);
@@ -162,17 +163,16 @@ function EditForm({
     const [price, setPrice] = useState(product.price.toString());
     const [description, setDescription] = useState(product.description || "");
     const [material, setMaterial] = useState(product.material || "");
-    const [polup, setPolup] = useState(product.polup || "");
-    const [polub, setPolub] = useState(product.polub || "");
-    const [shirinab, setShirinab] = useState(product.shirinab || "");
-    const [koleno, setKoleno] = useState(product.koleno || "");
-    const [dlina, setDlina] = useState(product.dlina || "");
-    const [vihod, setVihod] = useState(product.vihod || "");
-    const [vipo, setVipo] = useState(product.vipo || "");
-    const [files, setFiles] = useState<FileList | null>(null);
+
+    const [existingImages, setExistingImages] = useState<string[]>(
+        product.images.map(i => i.url)
+    );
+
+    const [newFiles, setNewFiles] = useState<File[]>([]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         onSave(
             {
                 ...product,
@@ -181,132 +181,60 @@ function EditForm({
                 price: parseFloat(price),
                 description,
                 material,
-                polup,
-                polub,
-                shirinab,
-                koleno,
-                dlina,
-                vihod,
-                vipo
             },
-            files
+            newFiles,
+            existingImages
         );
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="border p-4 rounded flex flex-col gap-2"
-        >
-            <h3 className="mb-2">Изменение товара</h3>
+        <form onSubmit={handleSubmit} className="border p-4 space-y-4">
+            <input value={title} onChange={e => setTitle(e.target.value)} className="border p-2 w-full" />
 
-            <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Название"
-                className="border px-2 py-1 w-full"
-            />
+            <input value={subtitle} onChange={e => setSubtitle(e.target.value)} className="border p-2 w-full" />
 
-            <input
-                value={subtitle}
-                onChange={(e) => setSubtitle(e.target.value)}
-                placeholder="Подзаголовок"
-                className="border px-2 py-1 w-full"
-            />
-
-            <input
-                type="number"
-                step="0.01"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                placeholder="Цена"
-                className="border px-2 py-1 w-full"
-            />
+            <input value={price} onChange={e => setPrice(e.target.value)} className="border p-2 w-full" />
 
             <textarea
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Описание"
-                className="border px-2 py-1 w-full"
+                onChange={e => setDescription(e.target.value)}
+                className="border p-2 w-full"
             />
 
-            <input
-                value={material}
-                onChange={(e) => setMaterial(e.target.value)}
-                placeholder="Материал"
-                className="border px-2 py-1 w-full"
-            />
+            {/* Существующие изображения */}
+            <div className="flex gap-3 flex-wrap">
+                {existingImages.map((img) => (
+                    <div key={img} className="relative w-24 h-24">
+                        <img src={img} className="w-full h-full object-cover rounded" />
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setExistingImages((prev) =>
+                                    prev.filter((i) => i !== img)
+                                )
+                            }
+                            className="absolute top-1 right-1 bg-black text-white w-5 h-5 rounded-full"
+                        >
+                            ×
+                        </button>
+                    </div>
+                ))}
+            </div>
 
-            <input
-                value={polup}
-                onChange={(e) => setPolup(e.target.value)}
-                placeholder="Полупояс"
-                className="border px-2 py-1 w-full"
-            />
-
-            <input
-                value={polub}
-                onChange={(e) => setPolub(e.target.value)}
-                placeholder="Полуобхват бедер"
-                className="border px-2 py-1 w-full"
-            />
-
-            <input
-                value={shirinab}
-                onChange={(e) => setShirinab(e.target.value)}
-                placeholder="Ширина бедра"
-                className="border px-2 py-1 w-full"
-            />
-
-            <input
-                value={koleno}
-                onChange={(e) => setKoleno(e.target.value)}
-                placeholder="Колено"
-                className="border px-2 py-1 w-full"
-            />
-
-            <input
-                value={dlina}
-                onChange={(e) => setDlina(e.target.value)}
-                placeholder="Длина"
-                className="border px-2 py-1 w-full"
-            />
-
-            <input
-                value={vihod}
-                onChange={(e) => setVihod(e.target.value)}
-                placeholder="Выход"
-                className="border px-2 py-1 w-full"
-            />
-            <input
-                value={vipo}
-                onChange={(e) => setVipo(e.target.value)}
-                placeholder="Высота посадки"
-                className="border px-2 py-1 w-full"
-            />
-
+            {/* Добавление новых */}
             <input
                 type="file"
                 multiple
-                onChange={(e) => setFiles(e.target.files)}
-                className="border px-2 py-1 w-full"
+                onChange={(e) =>
+                    setNewFiles(e.target.files ? Array.from(e.target.files) : [])
+                }
             />
 
-            <div className="flex gap-2">
-                <button
-                    type="submit"
-                    className="px-3 py-1 bg-black text-white rounded"
-                >
-                    Сохранить
-                </button>
-                <button
-                    type="button"
-                    onClick={onCancel}
-                    className="px-3 py-1 bg-black text-white rounded"
-                >
-                    Отмена
-                </button>
-            </div>
+            <button className="bg-black text-white px-4 py-2 rounded">
+                Сохранить
+            </button>
         </form>
     );
 }
+
+

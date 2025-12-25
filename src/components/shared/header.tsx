@@ -41,13 +41,8 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const Header: React.FC<Props> = ({ user, logout }) => {
     const [open, setOpen] = useState(false);
-    const [searchOpen, setSearchOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
-
-    const [query, setQuery] = useState("");
-    const [results, setResults] = useState<SearchResult[]>([]);
-    const [loading, setLoading] = useState(false);
 
     const { cart } = useCart();
     const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -61,30 +56,6 @@ export const Header: React.FC<Props> = ({ user, logout }) => {
         if (open || cartOpen || userMenuOpen) document.addEventListener("click", handleOutside);
         return () => document.removeEventListener("click", handleOutside);
     }, [open, cartOpen, userMenuOpen]);
-
-    const handleSearch = async (q: string) => {
-        setQuery(q);
-        if (q.length < 2) {
-            setResults([]);
-            return;
-        }
-        setLoading(true);
-        try {
-            const res = await fetch(`/api/products?search=${encodeURIComponent(q)}`);
-            if (!res.ok) {
-                setResults([]);
-                return;
-            }
-            const text = await res.text();
-            const data = text ? JSON.parse(text) : [];
-            setResults(data);
-        } catch (err) {
-            console.error("Ошибка поиска:", err);
-            setResults([]);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     return (
         <>
@@ -164,7 +135,7 @@ export const Header: React.FC<Props> = ({ user, logout }) => {
             </header>
 
             <div className="w-full text-white h-[30px] select-none bg-[#575757] justify-center text-[13px] flex items-center">
-                НОВАЯ КОЛЛЕКЦИЯ 2025
+                Fusionoff 2025
             </div>
 
             {open && <div className="fixed inset-0 bg-black/50 z-40"></div>}
@@ -174,59 +145,14 @@ export const Header: React.FC<Props> = ({ user, logout }) => {
             >
                 <nav className="flex flex-col gap-4">
                     <Link href="/" onClick={() => setOpen(false)}>Главная</Link>
-                    <Link href="/products" onClick={() => setOpen(false)}>Каталог</Link>
+                    <Link href="/products/jeans" onClick={() => setOpen(false)}>Джинсы</Link>
+                    <Link href="/products/hoodies" onClick={() => setOpen(false)}>Кофты</Link>
+                    <Link href="/products/cases" onClick={() => setOpen(false)}>Чехлы</Link>
                 </nav>
             </div>
 
 
             {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
-
-
-            {searchOpen && (
-                <div
-                    className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
-                    onClick={() => setSearchOpen(false)}
-                >
-                    <div
-                        className="bg-white rounded-lg p-6 w-[90%] max-w-md relative shadow-lg transition-all duration-300 scale-100 opacity-100"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <button
-                            onClick={() => setSearchOpen(false)}
-                            className="absolute top-2 right-2 text-gray-500 hover:text-black cursor-pointer"
-                        >
-                            <MdOutlineClose />
-                        </button>
-                        <h2 className="text-xl font-semibold mb-4">Поиск товаров</h2>
-                        <input
-                            type="text"
-                            value={query}
-                            onChange={(e) => handleSearch(e.target.value)}
-                            placeholder="Введите название товара..."
-                            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        />
-                        <div className="mt-4 max-h-60 overflow-y-auto">
-                            {loading && <p className="text-gray-500">Загрузка...</p>}
-                            {!loading && results.length === 0 && query.length > 1 && (
-                                <p className="text-gray-500">Ничего не найдено.</p>
-                            )}
-                            <ul className="divide-y">
-                                {results.map((p) => (
-                                    <li key={p.id} className="py-2">
-                                        <Link
-                                            href={`/product/${p.id}`}
-                                            className="hover:underline"
-                                            onClick={() => setSearchOpen(false)}
-                                        >
-                                            {p.title}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            )}
         </>
     );
 };

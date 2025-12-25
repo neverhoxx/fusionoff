@@ -1,8 +1,8 @@
-import { prisma } from "../../../prisma/prisma-client";
+import { prisma } from "../../../../prisma/prisma-client";
 import AdminProductsList from "./AdminProductsList";
 
-export default async function AdminProductsWrapper() {
-    const products = await prisma.product.findMany({
+export default async function JeansAdminProductsWrapper() {
+    const products = await prisma.jeans.findMany({
         include: { images: true },
         orderBy: { createdAt: "desc" },
     });

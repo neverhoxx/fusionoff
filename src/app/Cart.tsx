@@ -2,7 +2,6 @@
 import { motion } from "framer-motion";
 import { MdOutlineClose } from "react-icons/md";
 import { useCart } from "@/lib/useCart";
-
 import Link from "next/link";
 
 interface Props {
@@ -36,7 +35,7 @@ export default function Cart({ onClose }: Props) {
                     <ul className="space-y-4">
                         {cart.map((item) => (
                             <li
-                                key={item.id}
+                                key={`${item.productType}-${item.id}`}
                                 className="flex justify-between items-center border-b pb-2"
                             >
                                 <div>
@@ -46,9 +45,13 @@ export default function Cart({ onClose }: Props) {
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <p className="font-semibold">{item.price * item.quantity}₽</p>
+                                    <p className="font-semibold">
+                                        {item.price * item.quantity}₽
+                                    </p>
                                     <button
-                                        onClick={() => removeItem(item.id)}
+                                        onClick={() =>
+                                            removeItem(item.id, item.productType)
+                                        }
                                         className="text-red-600 text-sm hover:underline"
                                     >
                                         Удалить
@@ -65,7 +68,10 @@ export default function Cart({ onClose }: Props) {
                     <span className="font-medium">Итого:</span>
                     <span className="font-semibold">{total}₽</span>
                 </div>
-                <Link href="https://t.me/k3nn1e" className="w-full bg-black text-white py-3 px-10 rounded-lg hover:bg-gray-800 transition">
+                <Link
+                    href="https://t.me/k3nn1e"
+                    className="w-full bg-black text-white py-3 px-10 rounded-lg hover:bg-gray-800 transition"
+                >
                     Перейти к оплате
                 </Link>
             </div>

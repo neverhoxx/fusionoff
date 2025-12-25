@@ -49,40 +49,106 @@ model Session {
   user         User     @relation(fields: [userId], references: [id])
 }
 
-model Product {
-  id          Int            @id @default(autoincrement())
-  title       String
-  price       Float
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  description String?
-  dlina       String?
-  koleno      String?
-  material    String?
-  polub       String?
-  polup       String?
-  shirinab    String?
-  subtitle    String?
-  vihod       String?
-  vipo        String?
-  carts       Cart[]
-  images      ProductImage[]
+enum ProductType {
+  JEANS
+  HOODIE
+  CASE
 }
 
-model ProductImage {
+model Collection {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  jeans     Jeans[]
+}
+
+
+model Jeans {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  subtitle    String?
+  price       Float
+  material    String?
+
+  collectionId Int?
+  collection   Collection? @relation(fields: [collectionId], references: [id])
+
+  images      JeansImage[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+
+model JeansImage {
   id        Int     @id @default(autoincrement())
   url       String
-  productId Int
-  product   Product @relation(fields: [productId], references: [id])
+  jeansId Int
+  product   Jeans @relation(fields: [jeansId], references: [id])
 }
+
+model Hoodies {
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String?
+  subtitle    String?
+
+  price       Float
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  
+
+  material    String?
+  images      HoodiesImage[]
+}
+
+
+model HoodiesImage {
+  id        Int     @id @default(autoincrement())
+  url       String
+  hoodiesId Int
+  product   Hoodies @relation(fields: [hoodiesId], references: [id])
+}
+
+model Cases {
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String?
+  subtitle    String?
+
+  price       Float
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  
+
+  material    String?
+  images      CasesImage[]
+}
+
+
+model CasesImage {
+  id        Int     @id @default(autoincrement())
+  url       String
+  casesId Int
+  product   Cases @relation(fields: [casesId], references: [id])
+}
+
+
 
 model Cart {
-  id        Int     @id @default(autoincrement())
-  userId    Int
-  productId Int
-  quantity  Int     @default(1)
-  product   Product @relation(fields: [productId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  productId   Int
+  productType ProductType
+  quantity    Int         @default(1)
 
-  @@unique([userId, productId])
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, productId, productType])
 }
+
+
